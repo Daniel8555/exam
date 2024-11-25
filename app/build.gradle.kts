@@ -72,6 +72,7 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(libs.coil.compose)
     implementation(libs.glide)
+    implementation(libs.lottie)
 
 
 }
