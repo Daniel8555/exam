@@ -8,32 +8,66 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class MovieAdapter(private val movies: List<Movie>, private val onMovieClick: (Movie) -> Unit) :
-    RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
-    inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val poster: ImageView = itemView.findViewById(R.id.moviePoster)
-        val title: TextView = itemView.findViewById(R.id.movieTitle)
 
-        init {
-            itemView.setOnClickListener {
-                onMovieClick(movies[getBindingAdapterPosition()])
-            }
-        }
-    }
+import android.content.Context
+import android.content.Intent
+
+import android.widget.ImageButton
+
+
+class MovieAdapter(
+    private val context: Context,
+    private val movies: List<Movie>,
+    private val favoritesManager: FavoritesManager
+) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false)
         return MovieViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie = movies[position]
-        holder.title.text = movie.title
-        Glide.with(holder.itemView.context)
-            .load("https://image.tmdb.org/t/p/w500" + movie.poster_path)
-            .into(holder.poster)
+        holder.bind(movie)
+
+        holder.favoriteButton.setImageResource(
+            if (favoritesManager.getFavoriteMovies().any { it.id == movie.id })
+                R.drawable.ic_red_favorite_24
+            else
+                R.drawable.ic_baseline_favorite_border_24
+        )
+
+        holder.favoriteButton.setOnClickListener {
+            if (favoritesManager.getFavoriteMovies().any { it.id == movie.id }) {
+                favoritesManager.removeFavorite(movie)
+                holder.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+            } else {
+                favoritesManager.addFavorite(movie)
+                holder.favoriteButton.setImageResource(R.drawable.ic_red_favorite_24)
+            }
+        }
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, MovieDetailsActivity::class.java)
+            intent.putExtra("movie_key", movie)
+            intent.putExtra("isFavorite",movie.id)
+            context.startActivity(intent)
+        }
     }
 
-    override fun getItemCount() = movies.size
+    override fun getItemCount(): Int = movies.size
+
+    class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val title: TextView = itemView.findViewById(R.id.movieTitle)
+        private val poster: ImageView = itemView.findViewById(R.id.moviePoster)
+        val favoriteButton: ImageButton = itemView.findViewById(R.id.fav_btn)
+
+        fun bind(movie: Movie) {
+            title.text = movie.title
+            Glide.with(itemView.context)
+                .load("https://image.tmdb.org/t/p/w500${movie.poster_path}")
+                .into(poster)
+        }
+    }
 }
