@@ -1,34 +1,26 @@
 package com.example.cellcom_exam
 
 import android.annotation.SuppressLint
-import android.content.res.Resources.Theme
 import android.os.Bundle
-
 import androidx.appcompat.app.AppCompatActivity
-
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
-
-
 import android.util.Log
+import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
-import androidx.core.content.res.ResourcesCompat.ThemeCompat
 import com.example.cellcom_exam.databinding.MainActivityBinding
 
 
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var movieAdapter: MovieAdapter
-    private val favoritesManager by lazy { FavoritesManager(this) }
+    private val favoritesManager by lazy { FavoritesManager.initialize(this) }
     private val movieApiService by lazy {
         ApiService.createService(MovieApiService::class.java)
     }
@@ -38,19 +30,34 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        setSupportActionBar(binding.toolbar)
 
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         fetchPopularMovies()
+
     }
 
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        return when (keyCode) {
+
+            KeyEvent.KEYCODE_DPAD_LEFT -> {
+            openOptionsMenu()
+                true
+            }
+            else -> super.onKeyDown(keyCode, event)
+        }
+    }
+
+
+    //menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
-
+//menu selected
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_popular -> fetchPopularMovies()
@@ -87,7 +94,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fetchFavoriteMovies() {
-        val favoriteMovies = favoritesManager.getFavoriteMovies()
+        val favoriteMovies = FavoritesManager.getFavoriteMovies()
         movieAdapter = MovieAdapter(this, favoriteMovies, favoritesManager)
         recyclerView.adapter = movieAdapter
     }

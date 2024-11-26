@@ -33,10 +33,8 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:background="#80ffffff"
-
         android:focusableInTouchMode="false"
-        android:layout_gravity="left"
-
+        android:layout_gravity="center"
 
         >
     </ImageButton>
@@ -46,17 +44,20 @@
 <FrameLayout
 
     android:layout_width="match_parent"
-    android:layout_height="300dp">
+    android:layout_height="450dp">
 
     <ImageView
         android:id="@+id/moviePoster"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+     />
 
     <ImageView
         android:id="@+id/playIcon"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:scaleType="fitXY"
         android:background="@xml/play_icon_state"
         android:clickable="true"
         android:layout_gravity="center" />
@@ -68,10 +69,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <TextView
+
         android:id="@+id/movieOverview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textAlignment="gravity"
+        android:textColor="@color/black"
+        android:textStyle="italic"
+        android:textSize="20sp"
 
   />
 

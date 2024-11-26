@@ -1,11 +1,19 @@
 package com.example.cellcom_exam
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class FavoritesManager(context: Context) {
-    private val sharedPreferences = context.getSharedPreferences("favorites", Context.MODE_PRIVATE)
+
+object FavoritesManager {
+
+    private lateinit var sharedPreferences :SharedPreferences
+
+    fun initialize(context: Context) {
+          sharedPreferences = context.getSharedPreferences("favorites", Context.MODE_PRIVATE)
+    }
+
 
     fun addFavorite(movie: Movie) {
         val editor = sharedPreferences.edit()

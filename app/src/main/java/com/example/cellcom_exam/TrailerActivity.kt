@@ -1,11 +1,9 @@
 package com.example.cellcom_exam
 
 import android.app.Activity
-import android.net.Uri
 import android.os.Bundle
 import android.webkit.WebView
-import android.widget.ProgressBar
-import android.widget.VideoView
+
 
 class TrailerActivity : Activity() {
     private lateinit var webView: WebView
@@ -16,8 +14,6 @@ class TrailerActivity : Activity() {
         setContentView(R.layout.activity_trailer)
 
         webView = findViewById(R.id.webView)
-
-
 
         val trailerUrl = intent.getStringExtra("TRAILER_URL") ?: ""
 

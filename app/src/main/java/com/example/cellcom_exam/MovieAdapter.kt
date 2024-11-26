@@ -8,14 +8,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-
-
-
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-
 import android.widget.ImageButton
 import androidx.core.view.isVisible
 import com.airbnb.lottie.LottieAnimationView
@@ -24,7 +20,7 @@ import com.airbnb.lottie.LottieAnimationView
 class MovieAdapter(
     private val context: Context,
     private val movies: List<Movie>,
-    private val favoritesManager: FavoritesManager
+    private val favoritesManager: Unit
 ) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
 
@@ -38,7 +34,7 @@ class MovieAdapter(
         holder.bind(movie)
 
         holder.favoriteButton.setImageResource(
-            if (favoritesManager.getFavoriteMovies().any { it.id == movie.id }) {
+            if (FavoritesManager.getFavoriteMovies().any { it.id == movie.id }) {
                 R.drawable.ic_red_favorite_24
 
             }
@@ -49,12 +45,12 @@ class MovieAdapter(
 
 
         holder.favoriteButton.setOnClickListener {
-            if (favoritesManager.getFavoriteMovies().any { it.id == movie.id }) {
-                favoritesManager.removeFavorite(movie)
+            if (FavoritesManager.getFavoriteMovies().any { it.id == movie.id }) {
+                FavoritesManager.removeFavorite(movie)
                 holder.favoriteButton.setImageResource(R.drawable.ic_baseline_favorite_border_24)
 
             } else {
-                favoritesManager.addFavorite(movie)
+                FavoritesManager.addFavorite(movie)
                 holder.favoriteButton.setImageResource(R.drawable.ic_red_favorite_24)
                val lottie =  (context as Activity).findViewById<LottieAnimationView>(R.id.topLottieAnimation)
                 val recycle = (context as Activity).findViewById<RecyclerView>(R.id.recyclerView)

@@ -2,4 +2,8 @@
     <string name="app_name">cellcom_exam</string>
     <string name="title_activity_movie_details">MovieDetailsActivity</string>
     <string name="title_activity_trailer">TrailerActivity</string>
+    <string name="continue.">continue--></string>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="favorites">Favorites</string>
 </resources>

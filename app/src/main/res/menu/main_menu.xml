@@ -1,18 +1,27 @@
 <?xml version ="1.0" encoding ="utf-8"?><!--  Learn More about how to use App Actions: https://developer.android.com/guide/actions/index.html -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_popular"
-        android:title="Popular Movies"
+        android:title="@string/popular_movies"
         android:icon="@drawable/ic_cast"
+
+
+
+
+
   />
     <item
         android:id="@+id/action_now_playing"
-        android:title="Now Playing"
+        android:title="@string/now_playing"
+        app:showAsAction="collapseActionView"
         android:icon="@drawable/now_playing"
  />
     <item
+
         android:id="@+id/action_favorites"
-        android:title="Favorites"
+        android:title="@string/favorites"
+
         android:icon="@drawable/ic_favorite_24"
        />
 </menu>
